@@ -36,8 +36,14 @@ const App = () => {
         const updatedTasks: TaskType[] = [newTask, ...tasks]
         setTasks(updatedTasks)
     }
+    // const changeTaskStatus = (id: string) => {
+    //     setTasks(tasks.map(el => el.id === id ? {...el, isDone: !el.isDone} : el))
+    // }
+    const changeTaskStatus = (id: string, isDone: boolean) => {
+        setTasks(tasks.map(el => el.id === id ? {...el, isDone: !el.isDone} : el))
+    }
 
-    const getFilteredTasks = (tasks: TaskType[], filter: FilterValueType) : TaskType[] => {
+    const getFilteredTasks = (tasks: TaskType[], filter: FilterValueType): TaskType[] => {
         switch (filter) {
             case 'active' :
                 return tasks.filter(task => !task.isDone)
@@ -53,11 +59,13 @@ const App = () => {
     return (
         <div className="App">
             <TodoList
+                filter={filter}
                 title={todoListTitle}
                 tasks={filterTasks}
                 changeFilterValue={changeFilterValue}
                 removeTask={removeTask}
                 addTask={addTask}
+                changeTaskStatus={changeTaskStatus}
             />
         </div>
     );
