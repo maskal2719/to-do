@@ -50,9 +50,15 @@ const TodoList = (props: TodoListPropsType) => {
         error && setError(false)
         setTitle(event.currentTarget.value)
     }
-    const setAllFilterValue = () => props.changeFilterValue('all')
-    const setCompletedFilterValue = () => props.changeFilterValue('completed')
-    const setActiveFilterValue = () => props.changeFilterValue('active')
+
+    const handlerCreator = (filter: FilterValueType) => {
+        return () => props.changeFilterValue(filter)
+    }
+    // const setAllFilterValue = handlerCreator('all')
+    // const setCompletedFilterValue = handlerCreator('completed')
+    // const setActiveFilterValue = handlerCreator('active')
+
+
 
     const tasksItems = props.tasks.length
         ? props.tasks.map((task) => {
@@ -64,7 +70,6 @@ const TodoList = (props: TodoListPropsType) => {
             const removeTask = () => props.removeTask(task.id)
             //onClickRemoveTaskHandler
             const onChangeTaskStatusHandler = (event: ChangeEvent<HTMLInputElement>) => props.changeTaskStatus(task.id, event.currentTarget.checked)
-
 
             return (
                 <li key={task.id}>
@@ -78,6 +83,7 @@ const TodoList = (props: TodoListPropsType) => {
     const userMaxLength = error && <div style={{color: 'red'}}>Title is required</div>
     const inputErrorMessage = error || isUserMessageToLong ? 'input-error' : ''
     const userErrorMessage = isUserMessageToLong && <div style={{color: 'red'}}>Task title is so long</div>
+    const isAddBtnDisabled: boolean = title.length < 3 || title.length > 15
 
     return (
         <div>
@@ -96,7 +102,7 @@ const TodoList = (props: TodoListPropsType) => {
                         placeholder={'Please enter title'}
                         className={inputErrorMessage}
                     />
-                    <button disabled={title.length < 3 || title.length > 15} onClick={() => {
+                    <button disabled={isAddBtnDisabled} onClick={() => {
                         addTask()
                     }}>+
                     </button>
@@ -108,13 +114,13 @@ const TodoList = (props: TodoListPropsType) => {
                 </ul>
                 <div className={'filter-btn-container'}>
                     <button className={props.filter === "all" ? 'active-filter' : 'filter-btn'}
-                            onClick={setAllFilterValue}>All
+                            onClick={handlerCreator('all')}>All
                     </button>
                     <button className={props.filter === "active" ? 'active-filter' : 'filter-btn'}
-                            onClick={setActiveFilterValue}>Active
+                            onClick={handlerCreator('active')}>Active
                     </button>
                     <button className={props.filter === "completed" ? 'active-filter' : 'filter-btn'}
-                            onClick={setCompletedFilterValue}>Completed
+                            onClick={handlerCreator('completed')}>Completed
                     </button>
                 </div>
             </div>
