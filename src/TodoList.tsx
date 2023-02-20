@@ -54,10 +54,15 @@ const TodoList = (props: TodoListPropsType) => {
     const handlerCreator = (filter: FilterValueType) => {
         return () => props.changeFilterValue(filter)
     }
+    //Второй вариант записи креэйтора
+    // const handlerCreator = (filter: FilterValueType) => () => props.changeFilterValue(filter)
+    // Третий вариант с типизацией
+    // const handlerCreator = (filter: FilterValuesType): () => void => (): void => props.changeFilterValue(filter)
+
+    //Как было изначально
     // const setAllFilterValue = handlerCreator('all')
     // const setCompletedFilterValue = handlerCreator('completed')
     // const setActiveFilterValue = handlerCreator('active')
-
 
 
     const tasksItems = props.tasks.length
