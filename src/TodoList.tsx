@@ -5,10 +5,12 @@ type TodoListPropsType = {
     title: string
     filter: FilterValueType
     tasks: Array<TaskType>
-    changeFilterValue: (filter: FilterValueType) => void
-    removeTask: (id: string) => void
-    addTask: (title: string) => void
-    changeTaskStatus: (id: string, isDone: boolean) => void
+    changeFilterValue: (todolistId: string, filter: FilterValueType) => void
+    removeTask: (todolistId: string,id: string) => void
+    addTask: (todolistId: string, title: string) => void
+    changeTaskStatus: (todolistId: string, id: string, isDone: boolean) => void
+    todolistId: string
+    removeTodolist: (todolistId: string) => void
 }
 
 export type TaskType = {
@@ -37,7 +39,7 @@ const TodoList = (props: TodoListPropsType) => {
     const addTask = () => {
         const trimmedTitle = title.trim()
         if (trimmedTitle) {
-            props.addTask(title)
+            props.addTask(props.todolistId,title)
         } else {
             setError(true)
         }
@@ -52,7 +54,7 @@ const TodoList = (props: TodoListPropsType) => {
     }
 
     const handlerCreator = (filter: FilterValueType) => {
-        return () => props.changeFilterValue(filter)
+        return () => props.changeFilterValue(props.todolistId,filter)
     }
     //Второй вариант записи креэйтора
     // const handlerCreator = (filter: FilterValueType) => () => props.changeFilterValue(filter)
@@ -72,9 +74,9 @@ const TodoList = (props: TodoListPropsType) => {
             // taskClasses.join(' ')
 
             let taskClasses = task.isDone ? 'task task-done' : 'task';
-            const removeTask = () => props.removeTask(task.id)
+            const removeTask = () => props.removeTask(props.todolistId,task.id)
             //onClickRemoveTaskHandler
-            const onChangeTaskStatusHandler = (event: ChangeEvent<HTMLInputElement>) => props.changeTaskStatus(task.id, event.currentTarget.checked)
+            const onChangeTaskStatusHandler = (event: ChangeEvent<HTMLInputElement>) => props.changeTaskStatus(props.todolistId, task.id, event.currentTarget.checked)
 
             return (
                 <li key={task.id}>
@@ -93,7 +95,7 @@ const TodoList = (props: TodoListPropsType) => {
     return (
         <div>
             <div className='todolist'>
-                <h3>{props.title}</h3>
+                <h3>{props.title} <button onClick={() => props.removeTodolist(props.todolistId)}>x</button></h3>
                 <div>
                     {/*Способ с useRef*/}
                     {/*<input ref={addTaskInput}/>*/}
