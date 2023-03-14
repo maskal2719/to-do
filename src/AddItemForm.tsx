@@ -1,3 +1,5 @@
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 import React, {ChangeEvent, useState} from 'react';
 
 type AddItemFormPropsType = {
@@ -13,7 +15,6 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
     const isUserMessageToLong: boolean = title.length > maxLengthUserMessage
 
     const userMaxLength = error && <div style={{color: 'red'}}>Title is required</div>
-    const inputErrorMessage = error || isUserMessageToLong ? 'input-error' : ''
     const userErrorMessage = isUserMessageToLong && <div style={{color: 'red'}}>Task title is so long</div>
     const isAddBtnDisabled: boolean = title.length < 3 || title.length > 15
 
@@ -36,22 +37,31 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
     }
 
 
+    const buttonSettingsStyle = {
+        maxWidth: '38px',
+        maxHeight: '38px',
+        minWidth: '38px',
+        minHeight: '38px',
+    }
 
     return (
         <div>
-            <input
-                value={title}
-                onChange={changeLocalTitle}
-                onKeyDown={onKeyDownAddTask}
-                placeholder={'Please enter title'}
-                className={inputErrorMessage}
+            <TextField id="outlined-basic" label={error ? 'Title is requred' : 'Please enter title'} variant="outlined"
+                       value={title}
+                       onChange={changeLocalTitle}
+                       onKeyDown={onKeyDownAddTask}
+                       size={"small"}
+                       error={error}
             />
-            <button disabled={isAddBtnDisabled} onClick={() => {
-                addTask()
-            }}>+
-            </button>
-            {userMaxLength}
-            {userErrorMessage}
+            <Button
+                style={buttonSettingsStyle}
+                variant={'contained'}
+                size={'small'}
+                disabled={isAddBtnDisabled}
+                onClick={() => {
+                    addTask()
+                }}>+
+            </Button>
         </div>
     );
 };

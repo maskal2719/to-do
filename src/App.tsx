@@ -3,6 +3,8 @@ import './App.css';
 import TodoList, {TaskType} from "./TodoList";
 import {v1} from "uuid";
 import {AddItemForm} from "./AddItemForm";
+import ButtonAppBar from "./ButtonAppBar";
+import {Container} from "@mui/material";
 
 //crud
 //R - filter, sort, search
@@ -98,7 +100,10 @@ const App = () => {
 
     return (
         <div className="App">
+            <ButtonAppBar/>
+
             <AddItemForm callBack={addTodolist}/>
+
             {todolists.map(el => {
 
                 const getFilteredTasks = (tasks: TaskType[], filter: FilterValueType): TaskType[] => {
@@ -131,7 +136,7 @@ const App = () => {
                     />
                 )
             })}
-
+                <Container/>
         </div>
     );
 }
